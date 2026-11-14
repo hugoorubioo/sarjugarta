@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+data/train/
+docs/eval.log
+.ipynb_checkpoints/
