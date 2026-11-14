@@ -189,11 +189,14 @@ class BatteryAgent:
             we = np.asarray(prof[1], dtype=float)[hours]
             net = np.where(days >= 5, we, wk)
         last_net = last_load - last_pv
+        mode = int(self.p.get("use_load", 2))
+        if mode == 0:
+            return np.full(n, 1000.0)
         if last_load < self.p["outage_kw"]:
             # Caiguda de telemetria/subministrament: mentre dura, el campus no importa res,
             # així que descarregar no estalvia ni CO2 ni cost. Les caigudes duren hores.
-            net[: min(3, n)] = 0.0
-        else:
+            net[: min(int(self.p.get("outage_hours", 3)), n)] = 0.0
+        elif mode == 2:
             # la primera hora s'assembla molt a l'anterior (persistència)
             net[0] = min(net[0], last_net) if last_net < P_MAX_KW else max(last_net, P_MAX_KW)
         return net
