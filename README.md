@@ -148,7 +148,8 @@ d'estalvi (sobre ~1,36 M€), amb uns **500 cicles l'any**.
 
 Límits que cal dir clarament:
 
-- Els resultats són de validació amb dades de train; el Score real és el del test ocult de la plataforma.
+- Els resultats són de validació amb dades de train; el Score real és el del test ocult de la plataforma. Al rànquing públic (el 50 % de cada setmana de test) l'agent obté **6,43 punts amb 0 infraccions**.
+- La web dona dos valors per a la compensació d'excedents (0,04 €/kWh a les bases i 0 € a les preguntes freqüents). No afecta el resultat: el campus consumeix gairebé sempre més de 500 kW i l'agent no aboca energia a la xarxa.
 - El repte no modela la degradació ni el cost de la bateria. 500 cicles l'any escurcen la vida útil; el mateix
   programa lineal admet un cost per cicle afegint un terme a l'objectiu, i serviria per decidir la inversió i la mida òptima.
 - La bateria mou al voltant del 10 % de l'energia diària del campus: l'impacte té sostre.
