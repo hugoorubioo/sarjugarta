@@ -1,2 +1,0 @@
-# sarjugarta
-els millors
