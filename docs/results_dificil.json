@@ -1,0 +1,110 @@
+{
+ "1": {
+  "hores": 1844,
+  "oracle": {
+   "score": 22.442,
+   "co2_pct": 21.443,
+   "cost_pct": 24.774
+  },
+  "agent_estandard": {
+   "score": 8.174,
+   "co2_pct": 7.659,
+   "cost_pct": 9.374,
+   "infraccions": 0.0,
+   "temps_s": 5.2
+  },
+  "sense_models": {
+   "score": 9.066,
+   "co2_pct": 9.132,
+   "cost_pct": 8.911,
+   "infraccions": 0.0,
+   "temps_s": 6.3
+  },
+  "puntual": {
+   "score": 18.171,
+   "co2_pct": 16.901,
+   "cost_pct": 21.136,
+   "infraccions": 0.0,
+   "temps_s": 10.8
+  },
+  "escenaris": {
+   "score": 19.537,
+   "co2_pct": 18.484,
+   "cost_pct": 21.997,
+   "infraccions": 0.0,
+   "temps_s": 10.7
+  }
+ },
+ "8": {
+  "hores": 1848,
+  "oracle": {
+   "score": 21.418,
+   "co2_pct": 20.606,
+   "cost_pct": 23.311
+  },
+  "agent_estandard": {
+   "score": 7.907,
+   "co2_pct": 7.505,
+   "cost_pct": 8.844,
+   "infraccions": 0.0,
+   "temps_s": 5.3
+  },
+  "sense_models": {
+   "score": 8.896,
+   "co2_pct": 9.148,
+   "cost_pct": 8.31,
+   "infraccions": 0.0,
+   "temps_s": 6.4
+  },
+  "puntual": {
+   "score": 18.91,
+   "co2_pct": 18.046,
+   "cost_pct": 20.925,
+   "infraccions": 0.0,
+   "temps_s": 10.6
+  },
+  "escenaris": {
+   "score": 19.308,
+   "co2_pct": 18.705,
+   "cost_pct": 20.715,
+   "infraccions": 0.0,
+   "temps_s": 10.8
+  }
+ },
+ "15": {
+  "hores": 1725,
+  "oracle": {
+   "score": 19.919,
+   "co2_pct": 18.902,
+   "cost_pct": 22.289
+  },
+  "agent_estandard": {
+   "score": 7.208,
+   "co2_pct": 6.794,
+   "cost_pct": 8.173,
+   "infraccions": 0.0,
+   "temps_s": 5.0
+  },
+  "sense_models": {
+   "score": 8.75,
+   "co2_pct": 8.88,
+   "cost_pct": 8.446,
+   "infraccions": 0.0,
+   "temps_s": 5.7
+  },
+  "puntual": {
+   "score": 17.308,
+   "co2_pct": 16.297,
+   "cost_pct": 19.665,
+   "infraccions": 0.0,
+   "temps_s": 10.0
+  },
+  "escenaris": {
+   "score": 17.782,
+   "co2_pct": 16.906,
+   "cost_pct": 19.826,
+   "infraccions": 0.0,
+   "temps_s": 9.7
+  }
+ }
+}

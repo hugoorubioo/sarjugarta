@@ -10,15 +10,20 @@ emissions de CO₂ (70 % del Score) i factura elèctrica (30 %).
 | Regles per quantils (el nostre pla B) | 4,17 | 71 % | 0 |
 | **El nostre agent (MPC + programació lineal)** | **5,86** | **99,8 %** | **0** |
 | Òptim teòric amb tot el futur conegut | 5,87 | 100 % | 0 |
-| *Mode Difícil (3 h de previsió), el nostre agent* | *5,47* | *93 %* | *0* |
 
 Mitjana de tres rèpliques del test fetes amb setmanes reservades del train (detall a [Validació](#4-validació)).
+Al rànquing públic oficial l'agent obté **6,43 punts**.
+
+**Mode Difícil** (bateria de 6.000 kWh i ±1.500 kW, solar ×12, només 3 h de previsió): agent propi a
+[`submission_dificil/`](submission_dificil/), amb **18,9 punts** en validació sobre un òptim teòric de 21,3
+(detall a [Mode Difícil](#7-mode-difícil)).
 
 ## Què s'ha de lliurar
 
 | Fitxer | Què és |
 |---|---|
-| [`submission.zip`](submission.zip) | **El lliurament per a la plataforma web.** Conté `agent.py`, `params.json` i els dos models del Mode Difícil. |
+| [`submission.zip`](submission.zip) | **El lliurament del mode estàndard.** Conté `agent.py`, `params.json` i dos models de previsió de mercat. |
+| [`submission_dificil.zip`](submission_dificil.zip) | **El lliurament del Mode Difícil** (rànquing independent). Conté el seu `agent.py`, `params.json` i quatre models. |
 | [`submission/agent.py`](submission/agent.py) | El codi de l'agent, comentat. També es pot pujar sol (funciona sense els fitxers auxiliars; vegeu més avall). |
 | Aquesta memòria i [`docs/GUIA_PRESENTACIO.md`](docs/GUIA_PRESENTACIO.md) | Raonament tècnic i guió de la presentació. |
 
@@ -76,13 +81,11 @@ No hi ha llindars a ull ni caixes negres: cada consigna és la solució d'un pro
 El patró (carregar a la vall solar, descarregar a la punta del vespre i, si compensa, al matí) no està programat:
 surt de l'optimització. De mitjana fa 1,4 cicles al dia.
 
-### Mode Difícil (3 h de previsió)
+### Si només hi hagués 3 h de previsió
 
-El mateix agent detecta la longitud del vector de previsió. Amb només 3 h, estén la previsió fins a 24 h amb dos
-models LightGBM (un per al CO₂, un per al preu; `src/train_forecaster.py`). Variables: antelació, hora i tipus de dia
-de l'hora objectiu, mes, les 3 hores conegudes de tots dos senyals i la memòria recent de l'agent (ahir a la mateixa
-hora, mitjana de 24 h). En entrenar s'emmascara la memòria a l'atzar, perquè al test cada setmana comença sense
-historial. Els models es guarden en format text per no dependre de la versió de `pickle` del servidor.
+L'agent estàndard detecta la longitud del vector de previsió. Amb només 3 h, l'estén fins a 24 h amb dos models
+LightGBM (CO₂ i preu; `src/train_forecaster.py`). És l'experiment de la figura «Quantes hores de futur calen?»;
+el Mode Difícil de la plataforma és un problema diferent i té el seu propi agent ([secció 7](#7-mode-difícil)).
 
 ## 3. Robustesa
 
@@ -102,7 +105,7 @@ cada mes, concatenats com fa el servidor). Per a cada rèplica, **tots** els par
 la resta de dies, i s'avalua amb el simulador oficial amb les regles de la web (0,20 punts per infracció, excedents a
 0,04 €/kWh). Tot surt de `src/evaluate.py` → `docs/results.json`.
 
-| Rèplica (dies) | Òptim teòric | El nostre agent | ΔCO₂ | ΔCost | Mode Difícil |
+| Rèplica (dies) | Òptim teòric | El nostre agent | ΔCO₂ | ΔCost | Amb només 3 h de previsió |
 |---|---|---|---|---|---|
 | 1–7 | 6,089 | 6,085 | 5,67 % | 7,05 % | 5,680 |
 | 8–14 | 5,929 | 5,929 | 5,64 % | 6,60 % | 5,579 |
@@ -123,8 +126,9 @@ Conseqüència pràctica: **el Score d'aquest repte té un sostre físic** (el q
 
 Hem repetit la simulació donant a l'agent des d'1 fins a 24 hores de previsió. A partir de 12 h el Score és pla: la
 bateria s'omple en 4 h i es buida cada dia, i saber més enllà no canvia cap decisió. Per això planificar a 36 o 48 h
-amb previsions pròpies no aporta res (ho hem provat: mateix resultat fins al quart decimal). Al Mode Difícil sí que
-cal predir: sense predicció el Score cau a 3,12; amb perfils horaris puja a 5,22 i amb LightGBM a 5,47.
+amb previsions pròpies no aporta res (ho hem provat: mateix resultat fins al quart decimal). Si només hi hagués 3 h
+de previsió sí que caldria predir: sense predicció el Score cau a 3,12; amb perfils horaris puja a 5,22 i amb
+LightGBM a 5,47.
 
 ### Sensibilitat al pes del preu
 
@@ -183,4 +187,48 @@ python starter_kit/check_submission.py submission.zip
 | `src/evaluate.py` | Validació creuada completa → `docs/results.json` |
 | `src/make_figures.py` | Figures de `docs/figures/` |
 | `src/make_submission.py` | Empaqueta `submission.zip` |
+| `src/hard_core.py`, `src/hard_train.py`, `src/hard_eval.py` | Mode Difícil: simulador i òptim teòric, entrenament dels quatre models, validació |
 | `starter_kit/` | Simulador, validador i plantilla oficials (sense modificar; la plantilla és `agent_baseline.py`) |
+
+## 7. Mode Difícil
+
+Rànquing independent amb una infraestructura ampliada: bateria de **6.000 kWh i ±1.500 kW**, planta solar **×12**
+(fins a ~1.650 kW), només **3 hores** de previsió de preu i CO₂, i excedents a 0 €. És un problema diferent del
+mode estàndard, i per això té un agent propi (`submission_dificil/agent.py`).
+
+**Què canvia de fons.** Al mode estàndard no calia predir el consum; aquí és el centre del problema:
+
+- La bateria pot donar 1.500 kW, però el consum net sol ser de 600–1.300 kW: tot el que es descarrega de més es perd.
+- El 9 % de les hores la solar supera el consum: aquest excedent carrega la bateria gratis (0 € i 0 kg de CO₂).
+- El mercat només es coneix a 3 hores; la resta del dia s'ha de predir.
+
+**Com ho resolem.**
+
+1. **Quatre models LightGBM** (`src/hard_train.py`) prediuen hora a hora fins a +23 h el CO₂, el preu, el consum
+   i la solar. Fan servir l'hora, el dia, el mes, la meteorologia de l'última hora i la memòria de l'agent
+   (última hora, ahir a la mateixa hora, envolupant de cel clar). En entrenar s'emmascara la memòria imitant el
+   test, on cada setmana comença sense historial.
+2. **Escenaris d'incertesa.** L'error de predicció del consum net es mesura fora de mostra i es converteix en
+   7 escenaris per hora (quantils), segons l'antelació i el nivell de solar previst.
+3. **Programa lineal estocàstic.** Es minimitza el valor esperat de `Σ xarxa · w`, calculant la importació
+   escenari a escenari. Així el pla ja descompta que descarregar de més es perd i que carregar amb excedent és gratis.
+4. Mateix esquema MPC (només s'aplica la primera hora), mateix *clamp* de seguretat i política de reserva.
+
+**Resultats en validació** (`src/hard_eval.py` → `docs/results_dificil.json`; mateixes tres rèpliques):
+
+| Rèplica (dies) | Òptim teòric | Agent estàndard sense adaptar | Predicció puntual | **Amb escenaris** | ΔCO₂ | ΔCost |
+|---|---|---|---|---|---|---|
+| 1–7 | 22,44 | 8,17 | 18,17 | **19,54** | 18,5 % | 22,0 % |
+| 8–14 | 21,42 | 7,91 | 18,91 | **19,31** | 18,7 % | 20,7 % |
+| 15–21 | 19,92 | 7,21 | 17,31 | **17,78** | 16,9 % | 19,8 % |
+| **Mitjana** | **21,26** | **7,76** | **18,13** | **18,88** | | |
+
+0 infraccions a totes les rèpliques i uns 12 s per a 2.000 hores.
+
+**On és el marge que queda.** Amb previsió perfecta del mercat l'agent guanyaria ~1,0 punt, i amb previsió
+perfecta de consum i solar ~0,9 (mesurat a la rèplica 15–21). És incertesa del temps i del mercat que les dades
+disponibles no permeten reduir gaire: hem provat models més grans i més variables, i l'error de predicció millora
+menys d'un 1 %. Tractar la incertesa amb escenaris, en canvi, dona +0,75 punts sobre la predicció puntual.
+
+Els valors són de validació amb setmanes del train; el Score del test ocult pot ser diferent perquè les setmanes
+(i la seva solar) són unes altres.

@@ -1,0 +1,5 @@
+oracle             [22.442, 21.418, 19.919] mitjana 21.260 [None, None, None]
+agent_estandard    [8.174, 7.907, 7.208] mitjana 7.763 [5.2, 5.3, 5.0]
+sense_models       [9.066, 8.896, 8.75] mitjana 8.904 [6.3, 6.4, 5.7]
+puntual            [18.171, 18.91, 17.308] mitjana 18.130 [10.8, 10.6, 10.0]
+escenaris          [19.537, 19.308, 17.782] mitjana 18.876 [10.7, 10.8, 9.7]

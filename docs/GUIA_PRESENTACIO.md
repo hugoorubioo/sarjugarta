@@ -8,7 +8,7 @@
 3. Segona tramesa recomanada: `submission/agent.py` sol. En mode estàndard dona el mateix Score (5,856 en validació)
    i no depèn de cap fitxer auxiliar ni de LightGBM; és l'assegurança per si el servidor tingués problemes amb els models.
 4. Abans del tancament, marqueu aquestes dues com a **solucions oficials per al jurat**.
-5. Si la plataforma té rànquing de **Mode Difícil**, la tramesa bona és `submission.zip` (porta els models de predicció).
+5. **Mode Difícil** (pestanya i rànquing a part): la tramesa és `submission_dificil.zip`. No el pugeu a la pestanya del mode estàndard, ni `submission.zip` a la del Mode Difícil.
 
 El desempat és per menys infraccions i després per data de registre més antiga: com que el Score té sostre i altres
 equips hi poden arribar, **convé enviar aviat**.
@@ -25,7 +25,7 @@ equips hi poden arribar, **convé enviar aviat**.
 | 6 | L'agent | MPC: observa, optimitza (LP), actua, repeteix | 1:00 |
 | 7 | Una setmana real | El patró surt sol de l'optimització | 0:45 |
 | 8 | Resultats | 5,86 punts = 99,8 % de l'òptim teòric, 0 infraccions | 1:00 |
-| 9 | Valor de la informació | Amb 12 h n'hi ha prou; Mode Difícil amb LightGBM: 5,47 | 0:50 |
+| 9 | Valor de la informació | Amb 12 h n'hi ha prou. Mode Difícil: quatre models i escenaris, 18,9 de 21,3 | 0:50 |
 | 10 | Sensibilitat | κ és el màxim de Score i la corba és plana | 0:45 |
 | 11 | Enginyeria | 0 infraccions, pla B, 6 s de 60, casos límit | 0:40 |
 | 12 | Impacte | 44 t CO₂ i 91.000 € l'any; límits: degradació i mida | 0:45 |

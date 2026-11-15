@@ -81,7 +81,7 @@ vals = [np.mean([R[k]["horitzo"][str(h)] for k in FOLDS]) for h in hs]
 fig, a = plt.subplots(figsize=(6.5, 3.2))
 a.axhline(mean("oracle"), color=INK2, lw=1.2, ls="--"); a.text(24, mean("oracle") + 0.1, "òptim teòric", ha="right", color=INK2, fontsize=9)
 a.plot(hs, vals, color=BLUE, marker="o", ms=5, label="només amb la previsió donada")
-a.plot([3], [mean("dificil_gbm")], marker="D", ms=8, color=ORANGE, ls="none", label="3 h + la nostra predicció (Mode Difícil)")
+a.plot([3], [mean("dificil_gbm")], marker="D", ms=8, color=ORANGE, ls="none", label="3 h + la nostra predicció")
 a.set_xticks(hs); a.set_ylim(0, mean("oracle") * 1.15); a.set_xlabel("hores de previsió de preu i CO₂ disponibles"); a.set_ylabel("Score")
 a.legend(frameon=False, loc="lower right", fontsize=9); a.set_title("Quantes hores de futur calen?")
 save(fig, "05_valor_informacio.png")
